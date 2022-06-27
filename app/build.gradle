@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -29,9 +30,14 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        dataBinding = true
+    }
+
 }
 
 dependencies {
+    implementation 'com.google.firebase:firebase-auth:21.0.6'
     def nav_version = "2.4.2"
 
     implementation 'androidx.core:core-ktx:1.7.0'
