@@ -1,5 +1,8 @@
 package com.example.resturante
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,7 +11,15 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentResultListener
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.squareup.picasso.Picasso
 
 // TODO: Rename parameter arguments, choose names that match
@@ -23,7 +34,7 @@ private const val ARG_PARAM2 = "param2"
  */
 
 
-class RestaurantDetailsFragment : Fragment() {
+class RestaurantDetailsFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMyLocationButtonClickListener, GoogleMap.OnMyLocationClickListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -37,8 +48,10 @@ class RestaurantDetailsFragment : Fragment() {
     private var date: String? = null
     private var score: String? = null
     private var cost: String? = null
-    private var lat: String? = null
-    private var lon: String? = null
+    private var lat: Double? = null
+    private var lon: Double? = null
+
+    private lateinit var map: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +85,8 @@ class RestaurantDetailsFragment : Fragment() {
             date = result.getString("anio", "")
             score = result.getString("calificacion", "")
             cost = result.getString("costo", "")
+            lat = result.getString("latitud", "").toDouble()
+            lon = result.getString("longitud", "").toDouble()
 
 
             var ivItem = view.findViewById<ImageView>(R.id.ivMain)
@@ -88,26 +103,61 @@ class RestaurantDetailsFragment : Fragment() {
             view.findViewById<TextView>(R.id.tvCostoD).text = cost
             view.findViewById<TextView>(R.id.tvResenaD).text = review
             view.findViewById<TextView>(R.id.tvUbicacionD).text = address
+            createFragment()
+
         })
     }
 
+    private fun createFragment(){
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+    }
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RestaurantDetailsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RestaurantDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+        const val REQUEST_CODE_LOCATION=0
+    }
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode){
+            REQUEST_CODE_LOCATION -> if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                map.isMyLocationEnabled=true
+            } else {
+                Toast.makeText(context,"Para activar permisos, ve a ajustes y acepta los permisos", Toast.LENGTH_LONG).show()
             }
+
+            else -> {}
+        }
+    }
+
+    private fun crearMrker(lat: Double, lon: Double, txtUbicacion: String){
+        val coordenadas = LatLng(lat,lon )
+        val marker = MarkerOptions().position(coordenadas).title(txtUbicacion)
+        map.addMarker(marker)
+        map.animateCamera(
+            CameraUpdateFactory.newLatLngZoom(coordenadas,18f),
+            4000,null
+        )
+
+    }
+
+    override fun onMapReady(p0: GoogleMap) {
+        map = p0
+        map.setOnMyLocationButtonClickListener(this)
+        map.setOnMyLocationClickListener(this)
+        crearMrker(lat!!, lon!!,name!!)
+    }
+
+    override fun onMyLocationButtonClick(): Boolean {
+        TODO("Not yet implemented")
+    }
+
+    override fun onMyLocationClick(p0: Location) {
+        TODO("Not yet implemented")
     }
 }
