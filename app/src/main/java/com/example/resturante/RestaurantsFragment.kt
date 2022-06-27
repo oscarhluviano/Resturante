@@ -48,6 +48,8 @@ class RestaurantsFragment : Fragment(), RestaurantAdapter.OnItemListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_restaurants, container, false)
     }
@@ -74,7 +76,6 @@ class RestaurantsFragment : Fragment(), RestaurantAdapter.OnItemListener {
     }
 
     private fun getAllRestaurants(){
-        Toast.makeText(this.context,"¡Nuestras mejores recomendaciones!", Toast.LENGTH_SHORT).show()
         CoroutineScope(Dispatchers.IO).launch {
             val call: Response<RestaurantResponse> = getRetrofit().create(APIService::class.java).getAllRestaurants("restaurantes2")
             val allRestaurants:RestaurantResponse? = call.body()
@@ -91,19 +92,22 @@ class RestaurantsFragment : Fragment(), RestaurantAdapter.OnItemListener {
     }
 
     override fun clickRestaurant(item: Restaurants) {
-        Toast.makeText(this.context, "Movie: ${item.nombre}", Toast.LENGTH_SHORT).show()
-        val intent = Intent(this.context,RestaurantDetailsFragment::class.java)
-        intent.putExtra("nombre" , item.nombre)
-        intent.putExtra("calificacion" , item.calificacion)
-        intent.putExtra("anio" , item.anioCreacion)
-        intent.putExtra("costo" , item.costoPromedio)
-        intent.putExtra("direccion" , item.direccion)
-        intent.putExtra("resenia" , item.resenia)
-        intent.putExtra("latitud" , item.latitud)
-        intent.putExtra("longitud" , item.longitud)
-        intent.putExtra("foto1" , item.fotos?.get(0))
-        intent.putExtra("foto2" , item.fotos?.get(1))
-        intent.putExtra("foto3" , item.fotos?.get(2))
+        Toast.makeText(this.context, "Restaurante: ${item.nombre}", Toast.LENGTH_SHORT).show()
+        val bundle = Bundle()
+        bundle.putString("nombre" , item.nombre)
+        bundle.putString("calificacion" , item.calificacion)
+        bundle.putString("anio" , item.anioCreacion)
+        bundle.putString("costo" , item.costoPromedio)
+        bundle.putString("direccion" , item.direccion)
+        bundle.putString("resenia" , item.resenia)
+        bundle.putString("latitud" , item.latitud)
+        bundle.putString("longitud" , item.longitud)
+        bundle.putString("foto1" , item.fotos?.get(0))
+        bundle.putString("foto2" , item.fotos?.get(1))
+        bundle.putString("foto3" , item.fotos?.get(2))
+
+        parentFragmentManager.setFragmentResult("datosR", bundle)
+
         findNavController().navigate(R.id.action_restaurantsFragment_to_restaurantDetailsFragment)
     }
 

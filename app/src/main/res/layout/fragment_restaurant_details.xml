@@ -8,7 +8,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/ivMain"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +24,7 @@
         android:layout_marginTop="24dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/ivMain" />
 
     <TextView
         android:id="@+id/tvFechaD"
@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvNombreD" />
 
     <TextView
-        android:id="@+id/tvCalifiacionD"
+        android:id="@+id/tvCalificacionD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -100,7 +100,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/ivPhoto1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -110,24 +110,24 @@
         tools:src="@tools:sample/avatars" />
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/ivPhoto2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-        app:layout_constraintEnd_toStartOf="@+id/imageView5"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="@+id/imageView3"
+        app:layout_constraintBottom_toBottomOf="@+id/ivPhoto1"
+        app:layout_constraintEnd_toStartOf="@+id/ivPhoto3"
+        app:layout_constraintStart_toEndOf="@+id/ivPhoto1"
+        app:layout_constraintTop_toTopOf="@+id/ivPhoto1"
         tools:src="@tools:sample/avatars" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/ivPhoto3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+        app:layout_constraintBottom_toBottomOf="@+id/ivPhoto2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView4"
+        app:layout_constraintTop_toTopOf="@+id/ivPhoto2"
         tools:src="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>
